@@ -1,6 +1,6 @@
 # -*-coding:utf8-*-
 from django.contrib import admin
-from .models import Post, Tag, Category, Comment
+from .models import Post, Tag, Category, Comment, CommentPost
 
 
 # class GlobalSetting(object):
@@ -15,7 +15,7 @@ class PostAdmin(admin.ModelAdmin):
 
 
 class CommentAdmin(admin.ModelAdmin):
-    list_display = ['name', 'email', 'subject', 'text',]
+    list_display = ['name', 'email', 'subject', 'text', ]
 
 
 # class TagAdmin(object):
@@ -25,6 +25,13 @@ class CommentAdmin(admin.ModelAdmin):
 # class CategoryAdmin(object):
 #     list_display = ['name']
 
+class CommentPostAdmin(admin.ModelAdmin):
+    list_display = ('name', 'email', 'post', 'created', 'active')
+    list_filter = ('active', 'created', 'updated')
+    search_fields = ('name', 'email', 'body')
+
+
+admin.site.register(CommentPost, CommentPostAdmin)
 
 admin.site.register(Post, PostAdmin)
 admin.site.register(Tag)

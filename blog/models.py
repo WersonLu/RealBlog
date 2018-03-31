@@ -78,6 +78,7 @@ class Post(models.Model):
         super(Post, self).save(*args, **kwargs)
 
 
+#
 @python_2_unicode_compatible
 class Comment(models.Model):
     name = models.CharField(max_length=100, verbose_name=u"用户名")
@@ -90,9 +91,32 @@ class Comment(models.Model):
     created_time = models.DateTimeField(auto_now_add=True)
 
     # post = models.ForeignKey('blog.Post')
+    class Meta:
+        verbose_name = u'留言'
+        verbose_name_plural = verbose_name
 
     def __str__(self):
         return self.text[:20]
 
     def get_absolute_url(self):
         return reverse('blog:msg', kwargs={'pk': self.pk})
+
+
+# 评论系统,本想用一个type来做,但是我的留言板又不对应文章
+@python_2_unicode_compatible
+class CommentPost(models.Model):
+    post = models.ForeignKey(Post, related_name='comments')
+    name = models.CharField(max_length=80)
+    email = models.EmailField()
+    body = models.TextField()
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+    active = models.BooleanField(default=True)
+
+    class Meta:
+        ordering = ('created',)
+        verbose_name = u'文章评论'
+        verbose_name_plural = verbose_name
+
+    def __str__(self):
+        return 'Comment by {} on {}'.format(self.name, self.post)

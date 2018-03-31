@@ -73,8 +73,8 @@
                                         <span class="post-date"><time class="entry-date"
                                                                       datetime="{{ post.created_time }}">{{ post.created_time }}</time></span>
                                         <span class="post-author">{{ post.author }}</span>
-{#                                        <span class="comments-link"><a href="#">4 评论</a></span>#}
-                                        <span class="views-count"><a href="#">{{ post.views }}人围观</a></span>
+                                        <span class="comments-link">{{ post.comments.count }}评论</span>
+                                        <span class="views-count">{{ post.views }}人围观</span>
                                     </div>
                                 </header>
                                 <div class="entry-content clearfix">
@@ -194,6 +194,9 @@
                         </ul>
                     </div>
                     <hr class="tm-margin-t-small">
+                    <a href="{% url 'account:login' %}">
+                        <button type="button" class="btn btn-default">登录</button>
+                    </a>
                 </div>
             </aside>
 

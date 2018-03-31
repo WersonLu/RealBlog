@@ -11,7 +11,7 @@ from django.conf.urls import url
 from django.views.generic import TemplateView
 
 from . import views
-from blog.views import IndexView, PostDetailView, ShowComment
+from blog.views import IndexView, ShowComment
 
 app_name = 'blog'
 urlpatterns = [
@@ -19,7 +19,7 @@ urlpatterns = [
     # 博客列表页
     url(r'^blog/$', IndexView.as_view(), name='blog_list'),
     # 文章详情页
-    url(r'^post/(?P<pk>[0-9]+)/$', PostDetailView.as_view(), name='detail'),
+    url(r'^post/(?P<pk>[0-9]+)/$', views.post_detail, name='detail'),
 
     # 分类页
     url(r'^category/(?P<pk>[0-9]+)/$', views.category, name='category'),

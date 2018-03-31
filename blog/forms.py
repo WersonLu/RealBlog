@@ -8,10 +8,16 @@
 @data    : 
 '''
 from django import forms
-from .models import Comment
+from .models import Comment, CommentPost
 
 
 class CommentForm(forms.ModelForm):
     class Meta:
         model = Comment
         fields = ['name', 'email', 'subject', 'text']
+
+
+class CommentPostForm(forms.ModelForm):
+    class Meta:
+        model = CommentPost
+        fields = ('name', 'email', 'body')

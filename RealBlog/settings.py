@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'blog',
     'markdown_deux',
+    'account',
     # 'xadmin',
     # 'crispy_forms',
 ]

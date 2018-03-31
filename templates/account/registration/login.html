@@ -1,0 +1,20 @@
+{% extends "account/base.html" %}
+{% block title %}Log-in{% endblock %}
+{% block content %}
+    <h1>Log-in</h1>
+    {% if form.errors %}
+        <p>
+            帐号密码不匹配,重新登录
+        </p>
+    {% else %}
+        <p>请在下方登录:</p>
+    {% endif %}
+    <div class="login-form">
+        <form action="{% url 'login' %}" method="post">
+            {{ form.as_p }}
+            {% csrf_token %}
+            <input type="hidden" name="next" value="{{ next }}"/>
+            <p><input type="submit" value="登录"></p>
+        </form>
+    </div>
+{% endblock %}

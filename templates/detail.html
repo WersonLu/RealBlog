@@ -56,29 +56,48 @@
 
 <section class="tm-section">
     <div class="container-fluid">
-        <div class="row">
-            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-xs-center">
-                <!--<h2 class="tm-gold-text tm-title">简介</h2>-->
-                <p class="tm-subtitle">好看的皮囊千篇一律，有趣的灵魂二百来斤</p>
-            </div>
-        </div>
+
         <div class="row">
             <article class="post post-1">
                 <header class="entry-header">
                     <h1 class="entry-title">{{ post.title }}</h1>
-
                     <div class="entry-meta">
-                        <span class="post-category"><a href="{% url 'blog:category' post.category.pk %}">{{ post.category }}</a></span>
-                        <span class="post-date"><a href="#"><time class="entry-date"
-                                                                  datetime="2012-11-09T23:15:57+00:00">{{ post.created_time }}</time></a></span>
-                        <span class="post-author"><a href="#">{{ post.author }}</a></span>
-                        <span class="views-count"><a href="#">{{ post.views }}人围观</a></span>
+                        <span class="post-category"><a
+                                href="{% url 'blog:category' post.category.pk %}">{{ post.category }}</a></span>
+                        <span class="post-date"><time class="entry-date"
+                                                      datetime="2012-11-09T23:15:57+00:00">{{ post.created_time }}</time></span>
+                        <span class="post-author">{{ post.author }}</span>
+                        <span class="views-count">{{ post.views }}人围观</span>
+
                     </div>
                 </header>
                 <div class="entry-content clearfix">
                     {{ post.body |safe|markdown }}
                 </div>
             </article>
+            <hr class="tm-margin-t-small">
+            {% for comment in comments %}
+                <div class="comment">
+                    <p class="info">
+                        Created by {{ comment.name }}
+                        {{ comment.created }}
+                    </p>
+                    {{ comment.body|linebreaks }}
+                </div>
+                <hr class="tm-margin-t-small">
+            {% empty %}
+                <p>还没有评论.</p>
+            {% endfor %}
+            {% if new_comment %}
+                <h2>添加成功.</h2>
+            {% else %}
+                <h2>增加评论</h2>
+                <form action="." method="post">
+                    {{ commentpost_form.as_p }}
+                    {% csrf_token %}
+                    <p><input type="submit" value="提交"></p>
+                </form>
+            {% endif %}
         </div>
         <div class="row">
             <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3 col-xl-3">
