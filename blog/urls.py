@@ -11,7 +11,7 @@ from django.conf.urls import url
 from django.views.generic import TemplateView
 
 from . import views
-from blog.views import IndexView, ShowComment
+from blog.views import IndexView, ShowComment, AddUserMessage
 
 app_name = 'blog'
 urlpatterns = [
@@ -30,6 +30,7 @@ urlpatterns = [
     url(r'^messgae/$', ShowComment.as_view(), name='message'),
     # 留言页　，处理左侧表单
     # url(r'^message/$', MessageView.as_view(), name='message_form'),
+    url(r'^add_msg/$', AddUserMessage.as_view(), name="add_msg"),
     # 留言页详情
     url(r'^comment/(?P<pk>[0-9]+)/$', views.msg_detail, name='msg')
 ]

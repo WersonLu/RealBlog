@@ -1,3 +1,4 @@
+# -*-coding:utf8-*-
 from django.shortcuts import render
 
 # Create your views here.
@@ -20,11 +21,11 @@ def user_login(request):
             if user is not None:
                 if user.is_active:
                     login(request, user)
-                    return HttpResponse('登录成功!')
+                    return HttpResponse(u'登录成功!')
                 else:
                     return HttpResponse('Disabled account')
             else:
                 return HttpResponse('Invalid login')
     else:
         form = LoginForm()
-    return render(request, 'account/login.html', {'form': form})
+    return render(request, 'account/registration/login.html', {'form': form})

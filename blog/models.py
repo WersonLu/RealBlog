@@ -78,7 +78,7 @@ class Post(models.Model):
         super(Post, self).save(*args, **kwargs)
 
 
-#
+# 留言板
 @python_2_unicode_compatible
 class Comment(models.Model):
     name = models.CharField(max_length=100, verbose_name=u"用户名")

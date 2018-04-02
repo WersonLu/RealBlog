@@ -56,7 +56,7 @@
                     <h3 class="tm-gold-text tm-form-title">给我留言</h3>
                     <p class="tm-form-description">曾虑多情损梵行，入山又恐别倾城，世间安得双全法，不负如来不负卿<br>既然来了，何不坐下</p>
 
-                    <form action="" method="post" class="tm-contact-form">
+                    <form class="tm-contact-form" id="jsStayForm">
                         <div class="form-group">
                             <input type="text" id="contact_name" name="name" class="form-control"
                                    placeholder="Name" required/>
@@ -73,8 +73,8 @@
                             <textarea id="contact_message" name="text" class="form-control" rows="6"
                                       placeholder="Message" required></textarea>
                         </div>
-
-                        <button type="submit" class="tm-btn">Submit</button>
+                        <p class="error company-tips" id="jsCompanyTips"></p>
+                        <button type="submit" class="tm-btn" id="jsStayBtn">Submit</button>
                         {% csrf_token %}
                     </form>
                 </section>
@@ -136,13 +136,35 @@
         </div>
     </div>
 </footer>
-
 <!-- load JS files -->
 <script src="{% static 'js/jquery-1.11.3.min.js' %}"></script>
 <!-- jQuery (https://jquery.com/download/) -->
 {#<script src="https://www.atlasestateagents.co.uk/javascript/tether.min.js"></script>#}
-
 <script src="{% static 'js/bootstrap.min.js' %}"></script>
+<script>
+    $(function () {
+        $('#jsStayBtn').on('click', function () {
+            $.ajax({
+                cache: false,
+                type: "POST",
+                url: "/add_msg/",
+                data: $('#jsStayForm').serialize(),
+                async: true,
+                success: function (data) {
+                    if (data.status == 'success') {
+                        //防止用户重复提交，清空表单
+                        $('#jsStayForm')[0].reset();
+                        $('#jsCompanyTips').html("提交成功");
 
+                        window.location.reload();
+                    } else if (data.status == 'fail') {
+                        $('#jsCompanyTips').html(data.msg)
+                    }
+                },
+            });
+        });
+    })
+
+</script>
 </body>
 </html>

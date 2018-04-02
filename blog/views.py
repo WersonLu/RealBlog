@@ -1,5 +1,6 @@
 # -*-coding:utf8-*-
 from django.core.urlresolvers import reverse
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
 
 # Create your views here.
@@ -58,7 +59,6 @@ def post_detail(request, pk):
             new_comment = commentpost_form.save(commit=False)
             # 把评论跟post模型关联
             new_comment.post = post
-
             new_comment.save()
             return redirect(post)
     else:
@@ -102,28 +102,36 @@ class ShowComment(ListView):
     context_object_name = 'msg_list'
     paginate_by = 3
 
-    @staticmethod
-    def post(request):
-        message_form = CommentForm(request.POST)
-        if message_form.is_valid():
-            username = request.POST.get("name", "")
-            email = request.POST.get("email", "")
-            subject = request.POST.get("subject", "")
-            text = request.POST.get("text", "")
-            try:
-                send_mail(subject, '{}{}'.format(text, email), EMAIL_FROM, ["1066493443@qq.com"])
-            except:
-                print('不知名邮箱错误')
-            comment = Comment()
-            comment.name = username
-            comment.email = email
-            comment.subject = subject
-            comment.text = text
-            comment.save()
-            # msg_list = Comment.objects.all()
-            # return render(request, 'message.html', {'msg_list': msg_list})
-            return redirect('url')
+
+class AddUserMessage(View):
+
+    def post(self, request):
+        user_message = CommentForm(request.POST)
+        if user_message.is_valid():
+            user_msg = user_message.save(commit=True)
+            return HttpResponse("{'status:'success'}", content_type='application/json')
         else:
-
-            return render(request, '404.html')
-
+            return HttpResponse("{'status:'fail','msg':{}}".format(user_message.errors))
+    # @staticmethod
+    # def post(request):
+    #     message_form = CommentForm(request.POST)
+    #     if message_form.is_valid():
+    #         username = request.POST.get("name", "")
+    #         email = request.POST.get("email", "")
+    #         subject = request.POST.get("subject", "")
+    #         text = request.POST.get("text", "")
+    #         try:
+    #             send_mail(subject, '{}{}'.format(text, email), EMAIL_FROM, ["1066493443@qq.com"])
+    #         except:
+    #             print(u'不知名邮箱错误')
+    #         comment = Comment()
+    #         comment.name = username
+    #         comment.email = email
+    #         comment.subject = subject
+    #         comment.text = text
+    #         comment.save()
+    #         # msg_list = Comment.objects.all()
+    #         # return render(request, 'message.html', {'msg_list': msg_list})
+    #         return redirect('url')
+    #     else:
+    #         return render(request, '404.html')
